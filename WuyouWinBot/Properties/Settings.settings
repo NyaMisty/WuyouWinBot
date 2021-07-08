@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WuyouWinBot.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="wxAppId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">wxXXXXXXXXX</Value>
+    </Setting>
+    <Setting Name="wxAppSecret" Type="System.String" Scope="User">
+      <Value Profile="(Default)">abcdefghijklmn.......</Value>
+    </Setting>
+    <Setting Name="wxTemplateId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">aaaaa_bbbbb</Value>
+    </Setting>
+    <Setting Name="wxOpenId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">XXXXXXXXXXXX</Value>
+    </Setting>
+    <Setting Name="tgBotToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)">12345678765:qwertytrfdsfghgfd</Value>
+    </Setting>
+    <Setting Name="tgChatId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">12345678</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

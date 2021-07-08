@@ -1,0 +1,3 @@
+LIBRARY mtc_patch
+    EXPORTS
+        dummy @ 1 NONAME  
