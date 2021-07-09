@@ -113,14 +113,17 @@ namespace WuyouWinBot
             dtDateTime = dtDateTime.AddSeconds(message.sentTime / 1000).ToLocalTime();
             foreach (var notify in notifys)
             {
-                try
+                Task.Run(async () =>
                 {
-                    notify.notifySMS(user, message.displayName, dtDateTime, message.text);
-                }
-                catch (Exception e)
-                {
-                    Logger.WarnFormat("Error in onMessageRecv notify {0}: {1}", notify, e);
-                }
+                    try
+                    {
+                        await notify.notifySMS(user, message.displayName, dtDateTime, message.text);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.WarnFormat("Error in onMessageRecv notify {0}: {1}", notify, e);
+                    }
+                });
             }
         }
 
@@ -131,14 +134,17 @@ namespace WuyouWinBot
             dtDateTime = dtDateTime.AddSeconds(item.beginTime).ToLocalTime();
             foreach (var notify in notifys)
             {
-                try
+                Task.Run(async () =>
                 {
-                    notify.notifyCall(user, item.displayName, dtDateTime);
-                }
-                catch (Exception e)
-                {
-                    Logger.WarnFormat("Error in onCallItemAdd notify {0}: {1}", notify, e);
-                }
+                    try
+                    {
+                        await notify.notifyCall(user, item.displayName, dtDateTime);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.WarnFormat("Error in onCallItemAdd notify {0}: {1}", notify, e);
+                    }
+                });
             }
         }
 

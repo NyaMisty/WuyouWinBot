@@ -26,6 +26,7 @@ void dbg_printf(const char* fmt, ...) {
     vsprintf(dbg, fmt, args);
     OutputDebugStringA(dbg);
     OutputDebugStringA("\n");
+    printf("%s\n", dbg);
     va_end(args);
 }
 
@@ -94,7 +95,7 @@ size_t (CommonString::* CommonString::Common_String_size)() = NULL;
 void* (*Rsd_NtfnCreate)(const char*) = NULL;
 void* (*Rsd_NtfnAddStr)(void *, const char*, const char *) = NULL;
 void* (*Rsd_NtfnAddStrX)(void*, const char*, const char*, size_t) = NULL;
-void* Rsd_EnbLeaveNtfnX = NULL;
+void (*Rsd_EnbLeaveNtfnX)(void*) = NULL;
 void* (*Zos_ModPerform)(int, void *, const char*, void *) = NULL;
 
 #define ASSIGN(a, b) *(void **)(&a) = (void *)(b + slide)
@@ -189,17 +190,30 @@ void CDetour::hook_WgwMsgHandler(void* arg1, void* commandStream, void* dataStre
         return;
     }
 
-    auto gwoid = CommonString::c_str(CommonString::bufferString(&gwOidRet) + 40);
 
-    void* v26 = Rsd_NtfnCreate("MtcWgwDataRecvedNotification");
+    auto gwOidCStr = CommonString::c_str(CommonString::bufferString(&gwOidRet) + 40);
     auto fromCStr = CommonString::c_str(CommonString::bufferString(&fromRet) + 40);
-    Rsd_NtfnAddStr(v26, "MtcWgwUsernameKey", fromCStr);
     auto timeCStr = CommonString::c_str(CommonString::bufferString(&timeRet) + 40);
-    Rsd_NtfnAddStr(v26, "MtcWgwInstanceIdKey", timeCStr);
     auto dataCStr = CommonString::c_str(dataStr);
     auto dataSize = CommonString::size(dataStr);
-    Rsd_NtfnAddStrX(v26, "MtcWgwDataKey", dataCStr, dataSize);
-    dbg_printf("Got GwOid: %s, From: %s, Time: %s, Content: %s", gwoid, fromCStr, timeCStr, dataCStr);
-    Zos_ModPerform(15, Rsd_EnbLeaveNtfnX, "%p", v26);
+    dbg_printf("Got GwOid: %s, From: %s, Time: %s, Content: %s", gwOidCStr, fromCStr, timeCStr, dataCStr);
+
+    //void* v26 = Rsd_NtfnCreate("MtcWgwDataRecvedNotification");
+    //auto fromCStr = CommonString::c_str(CommonString::bufferString(&fromRet) + 40);
+    //Rsd_NtfnAddStr(v26, "MtcWgwUsernameKey", fromCStr);
+    //auto timeCStr = CommonString::c_str(CommonString::bufferString(&timeRet) + 40);
+    //Rsd_NtfnAddStr(v26, "MtcWgwInstanceIdKey", timeCStr);
+    //auto dataCStr = CommonString::c_str(dataStr);
+    //auto dataSize = CommonString::size(dataStr);
+    //Rsd_NtfnAddStrX(v26, "MtcWgwDataKey", dataCStr, dataSize);
+
+    void* ntfn = Rsd_NtfnCreate("MtcImInfoDidReceiveNotification");
+    Rsd_NtfnAddStr(ntfn, "MtcImUserUriKey", gwOidCStr);
+    Rsd_NtfnAddStr(ntfn, "MtcImDisplayNameKey", fromCStr);
+    Rsd_NtfnAddStr(ntfn, "MtcImTimeKey", timeCStr);
+    Rsd_NtfnAddStrX(ntfn, "MtcImInfoContentKey", dataCStr, dataSize);
+    Rsd_EnbLeaveNtfnX(ntfn);
+    dbg_printf("Triggered ntfn MtcImInfoDidReceiveNotification");
+
     CommonString::delString(dataStr);
 }

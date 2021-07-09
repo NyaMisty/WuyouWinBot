@@ -9,7 +9,7 @@ using log4net;
 
 namespace WuyouWinBot.JCWrapper
 {
-    class JCManager : JCClientCallback, JCMediaDeviceCallback, JCCallCallback, JCMessageChannelCallback, JCAccountCallback
+    class JCManager : JCClientCallback, JCMediaDeviceCallback, JCCallCallback, JCMessageChannelCallback
     {
         //private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Program));
@@ -135,8 +135,6 @@ namespace WuyouWinBot.JCWrapper
             _mediaDevice = JCMediaDevice.create(_client, this);
             _call = JCCall.create(_client, _mediaDevice, this);
             _messagechannel = JCMessageChannel.create(_client, this);
-            _account = JCAccount.create(this);
-
             addLog("*initialize");
             return true;
         }

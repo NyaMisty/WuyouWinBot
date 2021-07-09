@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using log4net;
 using Senparc.CO2NET;
 using Senparc.CO2NET.RegisterServices;
@@ -43,7 +44,7 @@ namespace WuyouWinBot.Notify
 
             AccessTokenContainer.Register(Properties.Settings.Default.wxAppId, Properties.Settings.Default.wxAppSecret);
         }
-        public async void notifyCall(string user, string from, DateTime time)
+        public async override Task notifyCall(string user, string from, DateTime time)
         {
             Logger.InfoFormat("Sending weixin notifyCall! user: {0}, from: {1}, time: {2}", user, from, time);
             var templateData = new WeixinTemplate("https://misty.moe", "无忧行 " + user + " 接到电话：" + from, "呼叫时间：" + time);
@@ -51,7 +52,7 @@ namespace WuyouWinBot.Notify
             Logger.InfoFormat("NotifyWeixin notifyCall result: {0}", result);
         }
 
-        public async void notifySMS(string user, string from, DateTime time, string message)
+        public async override Task notifySMS(string user, string from, DateTime time, string message)
         {
             Logger.InfoFormat("Sending weixin notifySMS! user: {0}, from: {1}, time: {2}, message: {3}", user, from, time, message);
             var templateData = new WeixinTemplate("https://misty.moe", "无忧行 " + user + " 收到短信：" + from, "短信内容：" + message);

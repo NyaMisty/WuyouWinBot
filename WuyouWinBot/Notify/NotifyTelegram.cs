@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Threading.Tasks;
 using log4net;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
@@ -13,10 +15,11 @@ namespace WuyouWinBot.Notify
 
         public NotifyTelegram()
         {
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             botClient = new TelegramBotClient(Properties.Settings.Default.tgBotToken);
         }
 
-        public async void notifyCall(string user, string from, DateTime time)
+        public async override Task notifyCall(string user, string from, DateTime time)
         {
             Logger.InfoFormat("Sending telegram notifyCall! user: {0}, from: {1}, time: {2}", user, from, time);
             var title = "无忧行 " + user + " 接到电话：" + from;
@@ -29,7 +32,7 @@ namespace WuyouWinBot.Notify
             Logger.InfoFormat("NotifyTelegram notifyCall result: {0}", m);
         }
 
-        public async void notifySMS(string user, string from, DateTime time, string message)
+        public async override Task notifySMS(string user, string from, DateTime time, string message)
         {
             Logger.InfoFormat("Sending telegram notifySMS! user: {0}, from: {1}, time: {2}, message: {3}", user, from, time, message);
             var title = "无忧行 " + user + " 收到短信：" + from;

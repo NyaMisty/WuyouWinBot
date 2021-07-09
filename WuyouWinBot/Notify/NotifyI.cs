@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace WuyouWinBot.Notify
 {
-    interface NotifyI
+    public abstract class NotifyI
     {
-        void notifySMS(string user, string from, DateTime time, string message);
-        void notifyCall(string user, string from, DateTime time);
+        public virtual async Task notifySMS(string user, string from, DateTime time, string message) { await Task.Delay(1); }
+        public virtual async Task notifyCall(string user, string from, DateTime time) { await Task.Delay(1); }
     }
 }
