@@ -39,7 +39,7 @@ namespace WuyouWinBot.Notify
             var content = "" + message;
             var m = await botClient.SendTextMessageAsync(
               chatId: Properties.Settings.Default.tgChatId,
-              text: String.Format("* {0} *\r\n{1}", title, content),
+              text: String.Format("* {0} *\r\n```{1}```", title, content),
               parseMode: ParseMode.Markdown
             );
             Logger.InfoFormat("NotifyTelegram notifySMS result: {0}", m);
